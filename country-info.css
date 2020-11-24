@@ -1,9 +1,20 @@
-h1.country-name {
-    position: relative;
-    top: 55px;
-    left: 35px;
+#flag {
+    float: left;
+    width: 50px;
+    height: 33px;
+    padding: 5px;
+    background-color: #777;
 }
 
-img.flag {
-    float: left;
+table#country_data {
+    clear: both;
+}
+
+p#no_bordering_euro_countries {
+    color: red;
+    font-weight: bold;
+}
+
+ul#bordering_countries {
+    list-style-type: none;
 }

@@ -1,28 +1,93 @@
 <?php
-    // url for web api request; $_GET['alpha'] is country code
-    $url = 'https://restcountries.eu/rest/v2/alpha/' . $_GET['alpha'];
-    $url .= '?fields=name;capital;subregion;population;latlng;borders;flag';
+    // make sure alpha3code is from Europe
+    function codeIsEuropean($code) {
+        // grab european coutnry codes
+        $euro_codes = file_get_contents('country-codes.json');
+        $euro_codes = json_decode($euro_codes, true);
 
-    // do request and get back JSON string
-    $country_info = file_get_contents($url);
+        // iterate through european alpha 3 codes
+        foreach ($euro_codes as $euro_code) {
+            // $code is a valid european alpha3Code
+            // capitalize $code since anything passed will be lower case
+            // and all stored codes are upper case
+            if ($euro_code['alpha3Code'] === strtoupper($code)) {
+                return true;
+            }
+        }
 
-    // turn JSON string into associative array
-    $country_info = json_decode($country_info, true);
+        // didn't match any of them i.e., not valid
+        return false;
+    }
+
+    // input: alpha3Code
+    // output: country name
+    function getCountryName($code) {
+        // get european country codes
+        $euro_codes = file_get_contents('country-codes.json');
+
+        // turn JSON string into an associative array
+        $euro_codes = json_decode($euro_codes, true);
+
+        // iterate thought european country codes
+        foreach ($euro_codes as $euro_code) {
+            // see if we found match
+            if ($euro_code['alpha3Code'] === $code) {
+                return $euro_code['name'];
+            }
+        }
+
+        // $code isn't an european alpha3Code
+        echo 'Ut-Oh. Wasn\'t supposed to get this far. Exiting program...';
+        exit();
+    }
+
+    // alaph is the only parameter
+    if (isset($_GET['alpha']) && $_GET['alpha'] != '' && count($_GET) === 1) {
+        // get alpha3Code
+        $code = $_GET['alpha'];
+
+        // if code is valid and european
+        if (codeIsEuropean($code)) {
+            // url for web api request; $_GET['alpha'] is country code
+            $url = 'https://restcountries.eu/rest/v2/alpha/' . $code;
+            $url .= '?fields=name;capital;subregion;population;latlng;borders;flag';
+
+            // do request and get back JSON string
+            $country_info = file_get_contents($url);
+
+            // turn JSON string into associative array
+            $country_info = json_decode($country_info, true);
+        }
+
+        // not european
+        else {
+            header('Location: 404.html');
+            exit();
+        }
+    }
+
+    else {
+        header('Location: 404.html');
+        exit();
+    }
 ?>
 
 <html lang="en">
     <head>
         <title>Info On <?php echo $country_info['name']; ?></title>
         <meta charset="UTF-8">
+        <link rel="stylesheet" href="country-info.css">
     </head>
     <body>
-        <h1 class="country-name">
-            <img class="flag" src="<?php echo $country_info['flag']; ?>" width="50" height="30"
-            alt="Image of Flag of <?php echo $country_info['name']; ?>"
-            title="Flag of <?php echo $country_info['name']; ?>">
-            <?php echo $country_info['name']; ?>
+        <a href="<?php echo $country_info['flag']; ?>">
+            <img id="flag" src="<?php echo $country_info['flag']; ?>"
+                alt="Image of Flag of <?php echo $country_info['name']; ?>"
+                title="Flag of <?php echo $country_info['name']; ?>">
+        </a>
+        <h1 id="country_name">
+            &nbsp;&nbsp;<?php echo $country_info['name']; ?>
         </h1>
-        <table>
+        <table id="country_data">
             <tr>
                 <th>Capital</th>
                 <td><?php echo $country_info['capital']; ?></td>
@@ -33,7 +98,7 @@
             </tr>
             <tr>
                 <th>Population</th>
-                <td><?php echo $country_info['population']; ?></td>
+                <td><?php echo number_format($country_info['population']); ?></td>
             </tr>
             <tr>
                 <th>Latitude</th>
@@ -45,23 +110,32 @@
             </tr>
         </table>
         <h2>Borders</h2>
-        <ul>
+        <ul id="bordering_countries">
             <?php
+                // count number of bordering countries
+                $num_bordering_euro = 0;
+
                 // for each bordering country
                 foreach ($country_info['borders'] as $country_code) {
-                    // create url for request
-                    $url = 'https://restcountries.eu/rest/v2/alpha/' . $country_code;
-                    $url .= '?fields=name';
+                    // test to see if code is european
+                    if (codeIsEuropean($country_code)) {
+                        // get name of country
+                        $country_name = getCountryName($country_code);
 
-                    // another request to REST countries for country name
-                    $country_name = file_get_contents($url);
+                        // echo list element in unordered list
+                        echo "<li><a href=\"country-info.php?alpha=$country_code\">$country_name</a></li>";
 
-                    // convert to associative array
-                    $country_name = json_decode($country_name, true);
-
-                    echo "<li><a href=\"country-info.php?alpha=$country_code\">" . $country_name['name'] . "</a></li>";
+                        // increment number of bordering countries
+                        $num_bordering_euro += 1;
+                    }
                 }
             ?>
         </ul>
+        <?php
+            // no bordering european countries
+            if ($num_bordering_euro == 0) {
+                echo '<p id="no_bordering_euro_countries">No bordering European countries.';
+            }
+        ?>
     </body>
 </html>
