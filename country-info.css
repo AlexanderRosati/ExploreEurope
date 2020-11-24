@@ -1,0 +1,9 @@
+h1.country-name {
+    position: relative;
+    top: 55px;
+    left: 35px;
+}
+
+img.flag {
+    float: left;
+}
