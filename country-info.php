@@ -2,7 +2,7 @@
     // make sure alpha3code is from Europe
     function codeIsEuropean($code) {
         // grab european coutnry codes
-        $euro_codes = file_get_contents('country-codes.json');
+        $euro_codes = file_get_contents('data/country-codes.json');
         $euro_codes = json_decode($euro_codes, true);
 
         // iterate through european alpha 3 codes
@@ -23,7 +23,7 @@
     // output: country name
     function getCountryName($code) {
         // get european country codes
-        $euro_codes = file_get_contents('country-codes.json');
+        $euro_codes = file_get_contents('data/country-codes.json');
 
         // turn JSON string into an associative array
         $euro_codes = json_decode($euro_codes, true);
@@ -70,72 +70,70 @@
         header('Location: 404.html');
         exit();
     }
+
+// include header.php
+include('includes/header.php');
+
 ?>
 
-<html lang="en">
-    <head>
-        <title>Info On <?php echo $country_info['name']; ?></title>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="country-info.css">
-    </head>
-    <body>
-        <a href="<?php echo $country_info['flag']; ?>">
-            <img id="flag" src="<?php echo $country_info['flag']; ?>"
-                alt="Image of Flag of <?php echo $country_info['name']; ?>"
-                title="Flag of <?php echo $country_info['name']; ?>">
-        </a>
-        <h1 id="country_name">
-            &nbsp;&nbsp;<?php echo $country_info['name']; ?>
-        </h1>
-        <table id="country_data">
-            <tr>
-                <th>Capital</th>
-                <td><?php echo $country_info['capital']; ?></td>
-            </tr>
-            <tr>
-                <th>Subregion</th>
-                <td><?php echo $country_info['subregion']; ?></td>
-            </tr>
-            <tr>
-                <th>Population</th>
-                <td><?php echo number_format($country_info['population']); ?></td>
-            </tr>
-            <tr>
-                <th>Latitude</th>
-                <td><?php echo $country_info['latlng'][0]; ?></td>
-            </tr>
-            <tr>
-                <th>Longitude</th>
-                <td><?php echo $country_info['latlng'][1]; ?></td>
-            </tr>
-        </table>
-        <h2>Borders</h2>
-        <ul id="bordering_countries">
-            <?php
-                // count number of bordering countries
-                $num_bordering_euro = 0;
+<a href="<?php echo $country_info['flag']; ?>">
+    <img id="flag" src="<?php echo $country_info['flag']; ?>"
+        alt="Image of Flag of <?php echo $country_info['name']; ?>"
+        title="Flag of <?php echo $country_info['name']; ?>">
+</a>
+<h2 id="country_name">
+    &nbsp;&nbsp;<?php echo $country_info['name']; ?>
+</h2>
+<table id="country_data">
+    <tr>
+        <th>Capital</th>
+        <td><?php echo $country_info['capital']; ?></td>
+    </tr>
+    <tr>
+        <th>Subregion</th>
+        <td><?php echo $country_info['subregion']; ?></td>
+    </tr>
+    <tr>
+        <th>Population</th>
+        <td><?php echo number_format($country_info['population']); ?></td>
+    </tr>
+    <tr>
+        <th>Latitude</th>
+        <td><?php echo $country_info['latlng'][0]; ?></td>
+    </tr>
+    <tr>
+        <th>Longitude</th>
+        <td><?php echo $country_info['latlng'][1]; ?></td>
+    </tr>
+</table>
+<h3>Borders</h3>
+<ul id="bordering_countries">
+    <?php
+        // count number of bordering countries
+        $num_bordering_euro = 0;
 
-                // for each bordering country
-                foreach ($country_info['borders'] as $country_code) {
-                    // test to see if code is european
-                    if (codeIsEuropean($country_code)) {
-                        // get name of country
-                        $country_name = getCountryName($country_code);
+        // for each bordering country
+        foreach ($country_info['borders'] as $country_code) {
+            // test to see if code is european
+            if (codeIsEuropean($country_code)) {
+                // get name of country
+                $country_name = getCountryName($country_code);
 
-                        // echo list element in unordered list
-                        echo "<li><a href=\"country-info.php?alpha=$country_code\">$country_name</a></li>";
+                // echo list element in unordered list
+                echo "<li><a href=\"country-info.php?alpha=$country_code\">$country_name</a></li>";
 
-                        // increment number of bordering countries
-                        $num_bordering_euro += 1;
-                    }
-                }
-            ?>
-        </ul>
-        <?php
-            // no bordering european countries
-            if ($num_bordering_euro == 0) {
-                echo '<p id="no_bordering_euro_countries">No bordering European countries.';
+                // increment number of bordering countries
+                $num_bordering_euro += 1;
             }
-        ?>
-    </body>
-</html>
+        }
+    ?>
+</ul>
+<?php
+    // no bordering european countries
+    if ($num_bordering_euro == 0) {
+        echo '<p id="no_bordering_euro_countries">No bordering European countries.';
+    }
+?>
+<?php
+    include('includes/footer.php');
+?>

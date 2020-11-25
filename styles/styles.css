@@ -1,0 +1,61 @@
+/* country-info.php *****************************************************************/
+
+/* for flag */
+#flag {
+    float: left;
+    width: 50px;
+    height: 33px;
+    padding: 5px;
+    background-color: #777;
+}
+
+/* table of country info */
+table#country_data {
+    clear: both;
+}
+
+/* message saying no bordering countries */
+p#no_bordering_euro_countries {
+    color: red;
+    font-weight: bold;
+}
+
+/* list of bordering countries */
+ul#bordering_countries {
+    list-style-type: none;
+}
+
+/* header.php ****************************************************************************/
+nav#navigation ul li {
+    display: inline;
+    list-style-type: none;
+    margin-right: 15px;
+}
+
+/* footer.php ****************************************************************************/
+p#dedication {
+    text-align: right;
+    margin-top: 150px;
+    margin-right: 15px;
+}
+
+/* list.php ********************************************************************************/
+div.colOne {
+    height: 250px;
+    float: left;
+    width: 45%;
+}
+
+div.colTwo {
+    height: 250px;
+    float: right;
+    width: 45%;
+}
+
+ul.group_countries li {
+    list-style-type: none;
+}
+
+div.clear {
+    clear: both;
+}

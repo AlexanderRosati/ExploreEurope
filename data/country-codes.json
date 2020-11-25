@@ -1,9 +1,5 @@
 [
     {
-      "name": "Åland Islands",
-      "alpha3Code": "ALA"
-    },
-    {
       "name": "Albania",
       "alpha3Code": "ALB"
     },
@@ -210,5 +206,9 @@
     {
       "name": "United Kingdom of Great Britain and Northern Ireland",
       "alpha3Code": "GBR"
+    },
+    {
+      "name": "Åland Islands",
+      "alpha3Code": "ALA"
     }
   ]
