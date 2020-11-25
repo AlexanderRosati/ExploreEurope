@@ -53,7 +53,7 @@
     // convert JSON to associative array
     $euro_countries = json_decode($euro_countries, true);
 ?>
-
+<main id="list_of_countries">
 <h2>European Countries</h2>
 
 <?php
@@ -82,6 +82,9 @@
 
     // clear floating
     echo '<div class="clear"></div>';
+
+    // print end of main
+    echo '</main>';
 
     // include footer
     include('includes/footer.php');

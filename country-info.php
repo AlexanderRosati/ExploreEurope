@@ -76,6 +76,7 @@ include('includes/header.php');
 
 ?>
 
+<main>
 <a href="<?php echo $country_info['flag']; ?>">
     <img id="flag" src="<?php echo $country_info['flag']; ?>"
         alt="Image of Flag of <?php echo $country_info['name']; ?>"
@@ -84,6 +85,7 @@ include('includes/header.php');
 <h2 id="country_name">
     &nbsp;&nbsp;<?php echo $country_info['name']; ?>
 </h2>
+<div class="clear"></div>
 <table id="country_data">
     <tr>
         <th>Capital</th>
@@ -106,7 +108,7 @@ include('includes/header.php');
         <td><?php echo $country_info['latlng'][1]; ?></td>
     </tr>
 </table>
-<h3>Borders</h3>
+<h3>Bordering Countries</h3>
 <ul id="bordering_countries">
     <?php
         // count number of bordering countries
@@ -134,6 +136,7 @@ include('includes/header.php');
         echo '<p id="no_bordering_euro_countries">No bordering European countries.';
     }
 ?>
+</main>
 <?php
     include('includes/footer.php');
 ?>

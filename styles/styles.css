@@ -17,7 +17,15 @@ body {
 
 /* table of country info */
 table#country_data {
-    clear: both;
+    margin-top: 20px;
+}
+
+table#country_data th {
+    text-align: right;
+}
+
+table#country_data td {
+    padding-left: 20px;
 }
 
 /* message saying no bordering countries */
@@ -95,4 +103,9 @@ ul.group_countries li {
 
 div.clear {
     clear: both;
+}
+
+/* all *********************************************************************************/
+main {
+    margin-left: 15px;
 }
