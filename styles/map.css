@@ -4,7 +4,6 @@
 	background: steelblue;
 	border: 10px rgb(184, 140, 31) groove;
 	border-radius: 2%;
-
 }
 
 .mapLayer{
@@ -23,4 +22,6 @@
 	position: relative;
 	top: 200px;
 	left: 850px;
+
+	background-color: cornsilk;
 }

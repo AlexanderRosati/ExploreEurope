@@ -5,8 +5,17 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="styles/normalize.css">
         <link rel="stylesheet" href="styles/styles.css">
-        <link rel="stylesheet" href="styles/map.css">
+        
+        <?php if(isset($currentPage) && $currentPage == "map") : ?>
+            <link rel="stylesheet" href="styles/map.css">
+            <style>
+                #map, .mapLayer 
+                {width:<?php echo $mapWidth;?>; 
+                height:<?php echo $mapHeight;?>;}
+           </style>            
+        <?php endif; ?>
     </head>
+
     <body>
         <header>
             <img id="eu_flag" src="images/eu-flag.png" alt="European Union Flag" title="European Union Flag">

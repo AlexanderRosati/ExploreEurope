@@ -1,20 +1,18 @@
-<?php include('includes/header.php'); ?>
-    <?php
-        $mapWidth = 800;
-        $mapHeight = 800;
-    ?>
+<?php
+    $mapWidth = 800;
+    $mapHeight = 800;
+?>
 
-    <script type="text/javascript">
-        const mapWidth = <?php echo $mapWidth;?>;
-        const mapHeight = <?php echo $mapHeight;?>;
-    </script>
+<script type="text/javascript">
+    const mapWidth = <?php echo $mapWidth;?>;
+    const mapHeight = <?php echo $mapHeight;?>;
+</script>
 
-    <style>
-        #map, .mapLayer 
-            {width:<?php echo $mapWidth;?>; 
-            height:<?php echo $mapHeight;?>;}
-    </style>
-
+<?php 
+    $currentPage = basename(__FILE__, ".php");
+    include('includes/header.php'); 
+?>
+    
     <script src="scripts/mapHandler.js"></script>
 
     <div id="map" onclick="mapClick(event)" onmousemove="mapHover(event)"
