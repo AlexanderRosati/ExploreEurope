@@ -10,9 +10,9 @@
             <link rel="stylesheet" href="styles/map.css">
             <style>
                 #map, .mapLayer 
-                {width:<?php echo $mapWidth;?>; 
-                height:<?php echo $mapHeight;?>;}
-           </style>            
+                {width:<?php echo $mapWidth;?>px; 
+                height:<?php echo $mapHeight;?>px;}
+            </style>            
         <?php endif; ?>
     </head>
 
