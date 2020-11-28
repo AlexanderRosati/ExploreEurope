@@ -5,7 +5,6 @@
         <meta charset="UTF-8">
         <link rel="stylesheet" href="styles/normalize.css">
         <link rel="stylesheet" href="styles/styles.css">
-        <link rel="stylesheet" href="styles/map.css">
     </head>
     <body>
         <header>
