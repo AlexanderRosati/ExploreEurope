@@ -29,7 +29,7 @@
                                         '" class="mapLayer">';
 
                     echo "\n     " . '<img id="img_' . $country['alpha3Code'] .
-                                        '" src="img/' .$country['alpha3Code'] . '.png' .
+                                        '" src="images/map/' .$country['alpha3Code'] . '.png' .
                                         '" width="'  . $mapWidth .
                                         '" height="' . $mapHeight .'">';
 
