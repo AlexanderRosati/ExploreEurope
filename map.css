@@ -1,0 +1,30 @@
+html
+{
+	background: grey;
+}
+
+body
+{
+	margin: auto;
+	margin-top: 3vh;
+	width: min-content;
+	padding: 10px;
+
+	border: 3px;
+	border-color: slateblue;
+	border-style: ridge;
+
+	background: lightgrey;
+}
+
+#map{
+	background: steelblue;
+}
+
+.mapLayer{
+	position: absolute;  
+}
+
+canvas{
+	border: 2px black solid;
+}
