@@ -18,16 +18,23 @@
 	<head>
 		<title>Explore Europe - Map</title>
 		<meta charset="utf-8">
-		<link rel="stylesheet" href="map.css">
+		<link rel="stylesheet" href="styles/normalize.css">
+		<link rel="stylesheet" href="styles/map.css">
 		<script src="scripts/mapHandler.js"></script>
 	</head>
 
-	<body>
-        <div id="map" onclick="mapClick(event)" onmousemove="mapHover(event)">
+    
+    <?php include('includes/header.php'); ?>
+
+
+	<body>        
+        <div id="map" onclick="mapClick(event)" onmousemove="mapHover(event)"
+                      onmouseover="mapEnter()" onmouseout="mapExit()">
+            
             <?php
                 //Create individual canvas objects for each country that we will be supporting
                 //This is used to create a clickable map
-                $countryCodes = file_get_contents('country-codes.json');
+                $countryCodes = file_get_contents('data/country-codes.json');
                 $countryCodes = json_decode($countryCodes, true);
                 foreach ($countryCodes as $country)
                 {
@@ -45,6 +52,13 @@
                     echo "\n" . '</canvas>' . "\n";
                 }
             ?>
-		</div>
+
+            <div id="hover_indicator" hidden>
+                
+            </div>
+        </div>
+        
+        
 	</body>
+    <?php include('includes/footer.php'); ?>
 </html>

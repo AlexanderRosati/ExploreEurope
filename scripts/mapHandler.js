@@ -44,10 +44,30 @@ function mapHover(event)
 
     var countryLayer = getCountryFocused(x, y);
 
+    var hoverText = document.getElementById("hover_indicator");
+
     if (countryLayer != null)
     {
-        console.log(countryLayer.getAttribute("name"));
+        hoverText.innerHTML = "Explore: " + countryLayer.getAttribute("name");
+        document.body.style.cursor = 'pointer';
     }
+    else
+    {
+        hoverText.innerHTML = "Explore: ...";
+        document.body.style.cursor = 'default';
+    }
+}
+
+function mapEnter()
+{
+    var hoverText = document.getElementById("hover_indicator");
+    hoverText.hidden = false;
+}
+
+function mapExit()
+{
+    var hoverText = document.getElementById("hover_indicator");
+    hoverText.hidden = true;
 }
 
 //Gets the country-codes.json info from the server
@@ -56,7 +76,7 @@ function mapHover(event)
 function getCountryCodesJSON()
 {
     var xhttpr = new XMLHttpRequest();
-    var url = "country-codes.json";
+    var url = "data/country-codes.json";
     xhttpr.open("GET", url, true);
     xhttpr.send();
 
