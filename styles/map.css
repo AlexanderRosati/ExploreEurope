@@ -1,5 +1,5 @@
 #map{
-	margin-left: 4vw;
+	margin-left: 6vw;
 	margin-top: 10px;
 	background: steelblue;
 	border: 10px rgb(184, 140, 31) groove;
@@ -20,8 +20,8 @@
 	width: 60%;
 
 	position: relative;
-	top: 200px;
-	left: 850px;
+	top: 340px;
+	left: 1000px;
 
 	background-color: aliceblue;
 }
