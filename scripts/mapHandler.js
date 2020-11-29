@@ -1,22 +1,25 @@
-//Returns the canvas layer of the country focused
-function getCountryFocused(x, y)
+//Matrix the same size as the map images that keeps track
+//of which country is where, used to optimize country clicking
+var hitRegions = [];
+
+//To prevent a bunch of error spam before things are loaded
+var mapSetupComplete = false;
+
+//Returns the country code of the country under the given coords
+//Returns null if there is no country
+function getCountryCodeAtCoord(x, y)
 {
-    //TODO: Consider caching this as a global
-    var mapLayers = document.getElementsByTagName("canvas");
-    var countryClicked = "";
+    //Error avoidance
+    if (mapSetupComplete == false ||
+        x < 0 || x >= mapWidth ||
+        y < 0 || y >= mapHeight)
+        return null;
 
-    for (var i = 0; i < mapLayers.length; i++)
-    {
-        pixelClicked = mapLayers[i].getContext("2d").getImageData(x,y,1,1).data;
+    var countryClicked = hitRegions[x][y];
 
-        //If the pixel focused is not transparent (IE a country was clicked)
-        if (pixelClicked[3]) 
-            return mapLayers[i];
-    }
-    //Nothing focused:
-    return null;
+    if (countryClicked == "") return null;
+    return countryClicked;
 }
-
 
 //Detects if the user clicked on a country in the map
 //If not, nothing happens
@@ -26,13 +29,12 @@ function mapClick(event)
     //Get mouse coordinates within the map display
     var x = event.offsetX;   var y = event.offsetY;
 
-    var countryLayer = getCountryFocused(x, y);
+    //Get the associated country code at that coordinate
+    var countryCode = getCountryCodeAtCoord(x, y);
 
-    if (countryLayer != null)
+    if (countryCode != null)
     {
-        var countryClicked = countryLayer.getAttribute("id");
-        var countryClickedCode = countryClicked.substring(6);
-        window.location.href = "country-info.php?alpha=" + countryClickedCode;
+        window.location.href = "country-info.php?alpha=" + countryCode;
     }
 }
 
@@ -42,13 +44,15 @@ function mapHover(event)
     //Get mouse coordinates within the map display
     var x = event.offsetX;   var y = event.offsetY;
 
-    var countryLayer = getCountryFocused(x, y);
+    var countryCode = getCountryCodeAtCoord(x, y);
 
     var hoverText = document.getElementById("hover_indicator");
 
-    if (countryLayer != null)
+    if (countryCode != null)
     {
-        hoverText.innerHTML = "Explore: " + countryLayer.getAttribute("name");
+        var canvasID = "layer_" + countryCode;
+        var countryName = document.getElementById(canvasID).getAttribute('name');
+        hoverText.innerHTML = "Explore: " + countryName;
         document.body.style.cursor = 'pointer';
     }
     else
@@ -58,16 +62,19 @@ function mapHover(event)
     }
 }
 
+//Show the hovertext to assist the user when their mouse is on the map...
 function mapEnter()
 {
     var hoverText = document.getElementById("hover_indicator");
     hoverText.hidden = false;
 }
 
+//...and hide the hovertext when the user is off of the map
 function mapExit()
 {
     var hoverText = document.getElementById("hover_indicator");
     hoverText.hidden = true;
+    document.body.style.cursor = 'default';
 }
 
 //Gets the country-codes.json info from the server
@@ -94,6 +101,17 @@ function getCountryCodesJSON()
 //retrieved by the request to draw the map using info about the html file
 function drawMap(countryList)
 {
+    //Prepare a matrix the same size as the map image
+    //That will keep track of which country is on which pixel
+    for (var i = 0; i < mapWidth; i++)
+    {
+        hitRegions[i] = [];
+        for (var h = 0; h < mapHeight; h++)
+        {
+            hitRegions[i][h] = "";
+        }
+    }
+
     for (i in countryList)
     {
         //Grab the canvas and image objects from the html
@@ -104,8 +122,6 @@ function drawMap(countryList)
         var image = document.getElementById(imageName);
 
         //Try to draw the image onto the canvas
-        //TODO: Optimization: build a matrix of pixels and their associated
-        //alpha3Codes to negate the need for all the canvas layere
         if (canvas == null || image == null) continue;
         else
         {
@@ -113,13 +129,28 @@ function drawMap(countryList)
             {
                 var context = canvas.getContext("2d");
                 context.drawImage(image, 0, 0, mapWidth, mapHeight);
+
+                //Create an internal map of where each country has coordinates in the image
+                var layerData = context.getImageData(0,0,mapWidth,mapHeight).data;
+
+                for (var w = 0; w < mapWidth; w++)
+                {
+                    for (var h = 0; h < mapHeight; h++)
+                    {
+                        //Each pixel has 4 components, and were interested in the alpha channel
+                        var index = (4*mapWidth*h) + (w*4) - 1;
+                        if (layerData[index] == 255)
+                            hitRegions[w][h] = countryList[i].alpha3Code;
+                    }
+                }
             }
             catch
             {
-                console.log("WARNING: Image for " + countryList[i].name + " not found.");
+                console.log("WARNING: Could not configure map for " + countryList[i].name);
             }
         }
     }
+    mapSetupComplete = true;
 }
 
 function init()
