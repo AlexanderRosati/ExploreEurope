@@ -139,7 +139,7 @@ function drawMap(countryList)
                     {
                         //Each pixel has 4 components, and were interested in the alpha channel
                         var index = (4*mapWidth*h) + (w*4) - 1;
-                        if (layerData[index] == 255)
+                        if (layerData[index] > 50)
                             hitRegions[w][h] = countryList[i].alpha3Code;
                     }
                 }

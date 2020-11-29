@@ -1,5 +1,5 @@
-<?php $mapWidth = 800;
-      $mapHeight = 800;
+<?php $mapWidth = 740;
+      $mapHeight = 740;
       $currentPage = basename(__FILE__, ".php");
 
       include('includes/header.php'); 
@@ -35,8 +35,10 @@
 
                     echo "\n" . '</canvas>' . "\n";
                 }
-            ?>
+            ?> 
+        </div>
 
+        <div id="hover_container">
             <div id="hover_indicator" hidden></div>
         </div>
     </main>

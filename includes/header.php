@@ -7,12 +7,12 @@
         <link rel="stylesheet" href="styles/styles.css">
         
         <?php if(isset($currentPage) && $currentPage == "map") : ?>
-            <link rel="stylesheet" href="styles/map.css">
             <style>
                 #map, .mapLayer 
                 {width:<?php echo $mapWidth;?>px; 
                 height:<?php echo $mapHeight;?>px;}
-            </style>            
+            </style> 
+            <link rel="stylesheet" href="styles/map.css">    
         <?php endif; ?>
     </head>
 
